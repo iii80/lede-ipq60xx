@@ -22,5 +22,19 @@ platform_do_upgrade() {
 	linksys,mr7350)
 		platform_do_upgrade_linksys "$1"
 		;;
+	xiaomi,redmi-ax5-jdcloud)
+		CI_KERNPART="0:HLOS"
+		CI_ROOTPART="rootfs"
+		emmc_do_upgrade "$1"
+		;;
 	esac
+}
+
+platform_copy_config() {
+	case "$(board_name)" in
+	xiaomi,redmi-ax5-jdcloud)
+		emmc_copy_config
+		;;
+	esac
+	return 0;
 }

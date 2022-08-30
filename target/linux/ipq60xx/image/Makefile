@@ -9,6 +9,7 @@ define Device/Default
 	KERNEL_LOADADDR := 0x41080000
 	DEVICE_DTS_DIR := $(DTS_DIR)/qcom
 	SUPPORTED_DEVICES := $(subst _,$(comma),$(1))
+	IMAGES := sysupgrade.bin
 	IMAGE/sysupgrade.bin = sysupgrade-tar | append-metadata
 	IMAGE/sysupgrade.bin/squashfs :=
 endef
@@ -106,6 +107,20 @@ define Device/qihoo_v6
 	DEVICE_PACKAGES := kmod-usb3 kmod-usb-phy-msm
 endef
 TARGET_DEVICES += qihoo_v6
+
+define Device/xiaomi_redmi-ax5-jdcloud
+	$(call Device/FitImage)
+	SOC := ipq6018
+	BLOCKSIZE := 64k
+	KERNEL_SIZE := 6144k
+	DEVICE_VENDOR := Xiaomi
+	DEVICE_MODEL := Redmi Router AX5 JDCloud
+	DEVICE_DTS_CONFIG := config@cp03-c1
+	IMAGES += factory.bin
+	IMAGE/factory.bin := append-kernel | pad-to 6144k |\
+			     append-rootfs | append-metadata
+endef
+TARGET_DEVICES += xiaomi_redmi-ax5-jdcloud
 
 define Device/zn_m2
 	$(call Device/FitImage)
